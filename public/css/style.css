@@ -1,0 +1,48 @@
+.updated{
+    color: #5890ff;
+    font-size: 20px;
+    font-weight: 900;
+}
+.smalltext{
+    font-size: smaller;
+}
+.body_holder{
+    font-size: 16px;
+    font-weight: 900;
+}
+.comment_by{
+    font-size: 10px;
+    font-weight: 500;
+}
+.comment_body{
+    font-size: 13px;
+    font-weight: 700;
+}
+.reply_by{
+     font-size: 9px;
+     font-weight: 300;
+ }
+.reply_body{
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.hideandseek{
+    display: none;
+}
+
+
+.connectionlessTimer{
+    font-size: 13px;
+    font-weight: 700;
+    color: #ac2925;
+}
+.disabled{
+    position: fixed;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    opacity: 0.4;
+}
