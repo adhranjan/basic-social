@@ -11,6 +11,12 @@
 |
 */
 Route::group(['middleware' => ['auth']], function () {
+
+
+    Route::get('/get_post',[
+        'as'=>'get_post',
+        'uses'=>'PostController@index',
+    ]);
     Route::get('/dashboard',[
         'as'=>'dashboard',
         'uses'=>'PostController@dashboard',

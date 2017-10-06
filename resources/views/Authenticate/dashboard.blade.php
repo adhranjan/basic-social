@@ -29,60 +29,61 @@
                     <br/>
                     @include('includes.message')
               </div>
-                <div class="col-md-offset-2">
+                <div class="col-md-offset-2" id="post_holder_">
                     <h3>Today's Post</h3>
+
                     @foreach($posts as $post)
-                        <article class="post" data-postid="{{$post->id}}">
-                        <div class="panel panel-default">
-                            <div class="panel-body"><div class="img_holder">
-                                @if($post->img_name!=null)
-                                    <img src="post_image/{{$post->img_name}}" width="60px" height="30px">
-                                @endif
-                                    <p class="small">{{$post->user->fullname}}</p>
-                                </div><div class="body_holder">{{$post->body}}</div>
-                                <button class="showHide fa fa-plus btn pull-right">
-                                </button>
-                            </div>
-                            <div class="panel-footer" id="underStatus{{$post->id}}" style="display:none">
+                        <article class="post" id = {{ $post->id  }} data-postid="{{$post->id}}">
+                            <div class="panel panel-default">
+                                <div class="panel-body"><div class="img_holder">
+                                        @if($post->img_name!=null)
+                                            <img src="post_image/{{$post->img_name}}" width="60px" height="30px">
+                                        @endif
+                                        <p class="small">{{$post->user->fullname}}</p>
+                                    </div><div class="body_holder">{{$post->body}}</div>
+                                    <button class="showHide fa fa-plus btn pull-right">
+                                    </button>
+                                </div>
+                                <div class="panel-footer" id="underStatus{{$post->id}}" style="display:none">
                                     <div class="interaction" id="target" data-postid="{{$post->user->fullname}}">
                                         <?php $like = DB::table('likes')->wherePost_id($post->id)->whereLike("true")->count();?>
                                         <?php $dislike = DB::table('likes')->wherePost_id($post->id)->whereLike("false")->count();?>
                                         @if($post->user_id==Auth::User()->id)
                                             <i class='fa fa-thumbs-up'></i> {{$like}} |
-                                                <i class='fa fa-thumbs-down'></i> {{$dislike}}
-                                                <br/>
-                                                <a href="#" class="edit">Edit</a>
-                                        <a href="{{ route('delete', $post->id )}}"><button type="button" class="btn btn-danger btn-sm" >Delete</button></a>
+                                            <i class='fa fa-thumbs-down'></i> {{$dislike}}
+                                            <br/>
+                                            <a href="#" class="edit">Edit</a>
+                                            <a href="{{ route('delete', $post->id )}}"><button type="button" class="btn btn-danger btn-sm" >Delete</button></a>
                                             <div class="comments{{$post->id}}">
                                                 <?php  $comments = DB::table('comments')->wherePost_id($post->id)->get(); ?>
                                                 <?php $x=1 ?>
                                                 @foreach($comments as $comment)
-                                                        <div class="panel-body" data-commentid="{{$comment->id}}">
-                                                            <?php  $comment_by = DB::table('users')->whereId($comment->user_id)->first(); ?>
-                                                            <span class="comment_by"> {{
+                                                    <div class="panel-body" data-commentid="{{$comment->id}}">
+                                                        <?php  $comment_by = DB::table('users')->whereId($comment->user_id)->first(); ?>
+                                                        <span class="comment_by"> {{
                                                               $comment_by->fullname
                                                          }}: </span>
-                                                          <span class="comment_body">
+                                                        <span class="comment_body">
                                                         {!!
                                                         $comment->comment_body
                                                          !!}
                                                           </span>
-                                                                <br/>
-                                                                <?php  $reply = DB::table('comment_replies')->whereComment_id($comment->id)->first(); ?>
-                                                                @if($reply)
-                                                                <span class="reply_by">
+                                                        <br/>
+                                                        <?php  $reply = DB::table('comment_replies')->whereComment_id($comment->id)->first(); ?>
+                                                        @if($reply)
+                                                            <span class="reply_by">
                                                                     You:
                                                                </span>
-                                                              <span class="reply_body">
+                                                            <span class="reply_body">
                                                                     {{$reply->replyBody}}
                                                               </span>
-                                                                @else
-                                                                    <div  id="replybox{{$x}}" data-replybox="{{$x}}" >
-                                                                        <input type="text" class="form-control replyComment" placeholder="reply">
-                                                                    </div>
-                                                                    <?php $x++ ?>
-                                                                 @endif
-                                                        </div>
+                                                        @else
+                                                            <div  id="replybox{{$x}}" data-replybox="{{$x}}" >
+                                                                <input type="text" class="form-control replyComment" placeholder="reply">
+                                                            </div>
+                                                            <?php $x++ ?>
+                                                        @endif
+                                                    </div>
                                                 @endforeach
                                             </div>
                                         @else
@@ -97,36 +98,36 @@
                                              !!}
                                             <span id="dislikesamount{{$post->id}}">{{$dislike}}</span>
                                             <div class="comments{{$post->id}}">
-                                              <?php  $comments = DB::table('comments')->wherePost_id($post->id)->get(); ?>
-                                                    @foreach($comments as $comment)
-                                                      <div class="panel-body">
-                                                          <?php  $comment_by = DB::table('users')->whereId($comment->user_id)->first(); ?>
-                                                         <span class="comment_by">
+                                                <?php  $comments = DB::table('comments')->wherePost_id($post->id)->get(); ?>
+                                                @foreach($comments as $comment)
+                                                    <div class="panel-body">
+                                                        <?php  $comment_by = DB::table('users')->whereId($comment->user_id)->first(); ?>
+                                                        <span class="comment_by">
                                                               {{ $comment_by->fullname }}
-                                                         : </span>
-                                                          <span class="comment_body">
+                                                            : </span>
+                                                        <span class="comment_body">
                                                         {!!
                                                         $comment->comment_body
                                                          !!}
                                                           </span>
-                                                              <br/>
-                                                              <?php  $reply = DB::table('comment_replies')->whereComment_id($comment->id)->first(); ?>
-                                                              @if($reply)
-                                                                  <span class="reply_by">
+                                                        <br/>
+                                                        <?php  $reply = DB::table('comment_replies')->whereComment_id($comment->id)->first(); ?>
+                                                        @if($reply)
+                                                            <span class="reply_by">
                                                                       {{$post->user->fullname}}
                                                                    </span>
-                                                                  <span class="reply_body">
+                                                            <span class="reply_body">
                                                                     {{$reply->replyBody}}
                                                               </span>
-                                                              @endif
-                                                      </div>
-                                                  @endforeach
+                                                        @endif
+                                                    </div>
+                                                @endforeach
                                             </div>
-                                              <input type="text" class="form-control commentInput" placeholder="write a comment" id="inputComment{{$post->id}}">
+                                            <input type="text" class="form-control commentInput" placeholder="write a comment" id="inputComment{{$post->id}}">
                                         @endif
                                     </div>
+                                </div>
                             </div>
-                        </div>
                         </article>
                     @endforeach
                 </div>
@@ -169,5 +170,16 @@
         var urlComment='{{route('comment')}}';
         var urlCommentreply='{{route('commentreply')}}';
         var urlConnection='{{route('connection')}}';
+
+
+
+    </script>
+@endsection
+
+@section('footer')
+
+    <script>
+
+
     </script>
 @endsection

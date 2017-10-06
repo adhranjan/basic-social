@@ -13,26 +13,36 @@ use File;
 use Carbon\Carbon;
 
 
-
-
 class PostController extends Controller
 {
-public function postCreatePost(PostRequest $postRequest){
+    use PostTrait;
+
+    public function index(Request $request)
+    {
+        $id =$request->id;
+        $postHtml = $this->getThePost($id);
+        return $postHtml;
+    }
+
+    public function postCreatePost(PostRequest $postRequest){
         if(Post::create([
             'body' => $postRequest->get('body'),
             'user_id'=>Auth::User()->id
         ])){
             $id=DB::getPdo()->lastInsertId();
+            $post=Post::where('id','=',$id)->first();
             $file = Input::file('post_image');
             if($file){
                 $filename = $id."_".$file->getClientOriginalName();
                 $destinationPath = base_path() . '/public/post_image/';
 
                 $file->move($destinationPath, $filename);
-                $post=Post::where('id','=',$id)->first();
                 $post->img_name=$filename;
                 $post->Update();
             }
+
+            $data['post'] = $this->getThePost($id);
+            $this->pusher->trigger('my-channel', 'my-event', $data);
             $message="Post created successfully. Wait till somebody responds you.";
             $status='success';
         }else{
@@ -42,7 +52,7 @@ public function postCreatePost(PostRequest $postRequest){
         return redirect('/dashboard')->with($status, $message);
     }
     public function dashboard(){
-        $posts=Post::orderBy('id', 'DESC')->get();
+        $posts=Post::orderBy('id', 'asc')->get();
         DB::table('posts')->where('created_at','<',Carbon::today()->toDateString())->delete();
         return view('Authenticate/dashboard',['posts'=>$posts]);
     }

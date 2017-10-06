@@ -22,4 +22,21 @@
 <script src="{{URL::to('js/comment.js')}}"></script>
 <script src="{{URL::to('js/connection.js')}}"></script>
 <script src="{{URL::to('js/commentreply.js')}}"></script>
+<script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+<script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('eb245b46960baa4bf91e', {
+        encrypted: true
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+        $('#post_holder_').append(data.post)
+    });
+</script>
+@yield('footer')
+
 </html>
